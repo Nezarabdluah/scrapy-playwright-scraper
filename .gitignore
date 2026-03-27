@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+
+# Secrets - NEVER commit these
+.env
+proxies.txt
+
+# Scrapy Output (generated files)
+data/
+logs/
+*.db
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Coverage
+htmlcov/
+.coverage
+coverage.xml

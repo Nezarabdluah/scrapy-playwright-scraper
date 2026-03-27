@@ -1,0 +1,66 @@
+# ============================================================
+# Scraper Configuration - Edit this file to target any website
+# ============================================================
+
+# Target website
+target_url: "https://example.com/listings"
+login_url: ""           # Leave empty if no login required
+base_url: "https://example.com"
+
+# Authentication (use .env for credentials)
+auth:
+  enabled: false
+  username_field: "username"   # HTML input name attribute
+  password_field: "password"   # HTML input name attribute
+  submit_selector: "button[type=submit]"
+  success_selector: ".dashboard"   # Selector visible after login
+
+# CSS Selectors for data extraction
+selectors:
+  items_list: ".item-card"          # Container for each item
+  title: ".item-title"
+  description: ".item-desc"
+  link: "a.item-link"
+  price: ".item-price"
+  date: ".item-date"
+  image: "img.item-image"
+
+# Pagination settings
+pagination:
+  type: "button"        # Options: button | url_param | infinite_scroll
+  next_selector: "a.next-page"
+  url_param: "page"     # Used when type=url_param
+  max_pages: 50
+
+# Wait conditions (for JS-rendered content)
+wait:
+  selector: ".item-card"    # Wait for this selector before scraping
+  timeout: 30000            # Milliseconds
+
+# Request delays (anti-detection)
+delays:
+  min: 2.0
+  max: 5.0
+
+# Browser settings
+browser:
+  headless: true
+  viewport_width: 1920
+  viewport_height: 1080
+
+# Output settings
+output:
+  csv: true
+  json: true
+  sqlite: true
+  db_name: "scraping.db"
+
+# Proxy (optional) - reads from proxies.txt if enabled
+proxy:
+  enabled: false
+  rotation: true
+
+# Misc
+respect_robots_txt: false
+max_retries: 3
+log_level: "INFO"

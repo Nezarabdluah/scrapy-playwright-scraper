@@ -1,0 +1,28 @@
+name: CI
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+jobs:
+  syntax-check:
+    name: Python Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: pip install -r requirements.txt
+      - name: Check syntax
+        run: |
+          python -m py_compile main.py
+          python -m py_compile scraper/settings.py
+          python -m py_compile scraper/spiders/main_spider.py
+          python -m py_compile scraper/middlewares/playwright_middleware.py
+          python -m py_compile scraper/middlewares/stealth_middleware.py
+          python -m py_compile scraper/pipelines/data_pipeline.py
+          echo "All files passed syntax check"
+      - name: Validate config.yaml
+        run: python -c "import yaml; yaml.safe_load(open('config.yaml')); print('config.yaml is valid')"
