@@ -1,26 +1,31 @@
-# عقد الكود والمعايير (Code Contract & Standards)
+# ⚖️ Code Contract & Standards
 
-هذا الملف يضمن استمرارية المشروع وفهم المطورين لأسلوب كتابة وتنفيذ الكود:
-
-## 1. التنفيذ والبيئة (Execution & Environment)
-- يجب **دائماً** استخدام البيئة الافتراضية الخاصة بالمشروع عند تنفيذ أي أوامر `Python`:
+## 1. Execution & Environment
+- Always use the project's virtual environment when running any script:
   ```powershell
   .\venv\Scripts\python.exe main.py
   ```
-- لتشغيل الاستخراج العام للجامعات والمواقع الديناميكية، استخدم `main.py` مع تعديل الإعدادات في `config.yaml`.
-- لتشغيل استخراج مقالات التخصصات العربية الخاصة بقائمة `menu_links.json`، استخدم `run_specialties.py`.
+- Never use the global `python` command — it will not have the required dependencies.
 
-## 2. تجاوز الحماية (Anti-Bot Headers)
-- ممنوع كلياً استخدام `urllib` أو طلبات `requests` المباشرة السريعة دون فواصل، لأن الموقع مدعوم بحماية SG-Captcha وسيقوم بحظر الـ IP.
-- يتم السحب حصراً باستخدام بيئة `Scrapy-Playwright` المدعومة بـ `StealthMiddleware` (المعرفة مسبقاً في `settings.py`).
+## 2. Anti-Bot Policy
+- Never use raw `urllib` or `requests` for direct scraping — these are trivially blocked by modern WAFs.
+- All HTTP requests must go through **Scrapy-Playwright** with the `StealthMiddleware` active.
+- Human simulation (scroll, mouse movement, random delays) is applied automatically on every page visit via `_playwright_meta()` in the main spider.
 
-## 3. التعامل مع البيانات (Data Handling & CSV Encoding)
-- لتصدير ملفات `CSV` لفتحها بشكل مباشر على أنظمة الإكسل الداعمة للغة العربية، يجب دائماً استخدام ترميز `utf-8-sig`.
-- يجب التأكد من عدم استخدام الفاصلة (`,`) داخل النصوص حتى لا يحدث تداخل في أعمدة الإكسل، وتتكفل `ExportPipeline` بهذه المهمة.
+## 3. Output & Encoding
+- All CSV exports must use `utf-8-sig` encoding to ensure correct column display in Excel (including multi-byte character sets).
+- All exports are written to `data/<project>/<folder>/` as defined in `config.yaml`.
+- Every scraping run produces three output files: `.csv`, `.json`, and `.db`.
 
-## 4. مسارات التخزين
-- كافة النتائج يتم ترحيلها حصراً إلى مجلد `data/your_uni/`.
-- تُخزن كافة عمليات السحب بثلاث صيغ لضمان أقصى استفادة:
-  - `.json` (لواجهات الـ Web)
-  - `.db` (قاعدة بيانات سليمة عبر SQLite)
-  - `.csv` (للفحص اليدوي عبر Excel)
+## 4. Spider Modes
+- Use `extraction_mode: "list"` in `config.yaml` for table or card-based page layouts.
+- Use `extraction_mode: "sections"` for heading-based layouts (e.g., h3 followed by paragraphs).
+
+## 5. Browser Visibility
+- `headless: False` in `settings.py` → browser is visible (development/monitoring).
+- `headless: True` → browser runs silently in background (production/speed).
+
+## 6. Adding New Spiders
+- All new spiders must be placed in `scraper/spiders/`.
+- They must inherit from `scrapy.Spider` and use `_playwright_meta()` or equivalent Playwright meta for every request.
+- Data must be yielded as plain dicts — the pipeline handles export automatically.

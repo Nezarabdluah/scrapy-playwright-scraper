@@ -1,28 +1,25 @@
-# 📋 الحالة الحالية للمشروع — Current State
+# 📋 Current Project State
 
-## آخر تحديث: 2026-04-03
+## Last Updated: 2026-04-03
 
-## ✅ ما تم إنجازه بالكامل
+## ✅ Completed
 
-### 1. استخراج بيانات المواقع العربية والإنجليزية
-| البيانات | الملف | الحالة |
-|---------|-------|-------|
-| الجامعات الماليزية (EN) | `data/your_uni/universities_en/` | ✅ مكتمل |
-| الجامعات الماليزية (AR) | `data/your_uni/universities_ar/` | ✅ مكتمل |
-| المعاهد (EN) | `data/your_uni/institutes_en/` | ✅ مكتمل |
-| المعاهد (AR) | `data/your_uni/institutes_ar/` | ✅ مكتمل |
-| الكورسات والتخصصات (EN) | `data/your_uni/specialties_en/` | ✅ مكتمل |
-| التخصصات العربية (AR) - مقالات | `data/your_uni/specialties_ar/` | ✅ مكتمل (70 تخصص) |
+### Core Scraping Infrastructure
+- Main spider supporting both `list` mode (tables/cards) and `sections` mode (heading-based pages)
+- Playwright integration with human-like simulation (scroll, mouse, random delays)
+- 3-stage data pipeline: deduplication → cleaning → triple export (CSV, JSON, SQLite)
+- Stealth middleware stack to bypass bot-detection systems
+- Visible browser mode enabled (`headless: False`) for live monitoring
 
-### 2. معالجة وتنظيف البيانات
-- ✅ سكريبت `process_courses.py` يفصل (السعر / المدة / مواعيد القبول) لأعمدة منفصلة
-- ✅ جميع ملفات CSV مصدّرة بـ `utf-8-sig` وتعمل بشكل مثالي في Excel
-- ✅ كل مجموعة بيانات متوفرة بـ 3 صيغ: `.csv` و `.json` و `.db`
+### Additional Scripts
+- `run_specialties.py` — runs the URL-list spider through the full pipeline
+- `process_courses.py` — post-processing script that splits compound text fields (prices, durations, intakes) into separate structured columns
 
-### 3. تحسينات المتصفح
-- ✅ تفعيل وضع المتصفح المرئي (`headless: False`)
-- ✅ محاكاة السلوك البشري: حركة ماوس + تمرير تدريجي + توقفات عشوائية
+### Data Quality
+- All CSV files exported with `utf-8-sig` encoding for correct display in Excel
+- Data cleaned via `CleaningPipeline`: HTML tags removed, Unicode normalized, whitespace collapsed
 
-## 🔮 الخطوات المقترحة التالية
-- دمج ملفات JSON أو SQLite في قاعدة بيانات منصة ANLASH
-- إضافة جدولة تلقائية للتشغيل الدوري (cron / Task Scheduler)
+## 🔮 Suggested Next Steps
+- Schedule automatic periodic runs (cron / Windows Task Scheduler)
+- Add proxy rotation support for large-scale scraping
+- Integrate exported JSON or SQLite files into your main application or database

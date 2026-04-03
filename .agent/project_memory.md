@@ -1,33 +1,34 @@
-# 🧠 ذاكرة المشروع — Project Memory
+# 🧠 Project Memory
 
-## الهدف من المشروع
-أداة استخراج بيانات ويب (Web Scraper) مبنية على **Scrapy + Playwright**، قادرة على:
-- سحب أي بيانات من أي موقع بمجرد تعديل `config.yaml`
-- تجاوز أنظمة الحماية (Cloudflare, SG-Captcha)
-- تصدير البيانات بثلاثة تنسيقات تلقائياً (CSV, JSON, SQLite)
-- محاكاة سلوك المستخدم البشري (scroll, mouse move, random wait)
+## Project Goal
+A professional web data scraper built on **Scrapy + Playwright**, capable of:
+- Extracting structured data from any website by simply editing `config.yaml`
+- Bypassing modern bot-protection systems (Cloudflare, SG-Captcha, etc.)
+- Automatically exporting data in three formats: CSV, JSON, and SQLite
+- Simulating real human browser behavior (scrolling, mouse movement, random delays)
 
-## المعمارية العامة
+## Architecture Overview
 
 ```
-main.py          ← نقطة الدخول الرئيسية (Scrapy CrawlerProcess)
-config.yaml      ← جميع إعدادات السحب والاستخراج والتصدير
+main.py                  ← Main entry point (Scrapy CrawlerProcess)
+config.yaml              ← All scraping, extraction, and export settings
 
 scraper/
 ├── spiders/
-│   ├── main_spider.py           ← العنكبوت الرئيسي العام
-│   └── ar_specialties_spider.py ← عنكبوت روابط قائمة menu_links.json
-├── pipelines/data_pipeline.py   ← 3 مراحل: إزالة التكرار، تنظيف، تصدير
+│   ├── main_spider.py           ← General-purpose spider (list & sections modes)
+│   └── ar_specialties_spider.py ← Spider for scraping a list of URLs from menu_links.json
+├── pipelines/data_pipeline.py   ← 3-stage pipeline: dedup → clean → export
 ├── middlewares/                 ← StealthMiddleware + PlaywrightMiddleware
-└── settings.py                  ← إعدادات Scrapy والمتصفح
+└── settings.py                  ← Scrapy settings and browser configuration
 
-run_specialties.py  ← تشغيل ar_specialties_spider مباشرة
-process_courses.py  ← تنظيف الحقول المتداخلة (أسعار، مدد، تواريخ)
+run_specialties.py   ← Entrypoint to run ar_specialties_spider through the full pipeline
+process_courses.py   ← Post-processing script to split compound fields into clean columns
 ```
 
-## ملاحظات تقنية مهمة
-- **حالة `headless`:** يمكن تبديلها في `settings.py` → `PLAYWRIGHT_LAUNCH_OPTIONS`
-  - `False` = متصفح مرئي (للمراقبة والتطوير)
-  - `True`  = متصفح مخفي (للإنتاج والتشغيل السريع)
-- **ترميز الـ CSV:** يُصدَّر دائماً بـ `utf-8-sig` لضمان توافق الإكسل العربي
-- **تشغيل بيئة:** يجب استخدام `.\venv\Scripts\python.exe` دائماً وليس `python` مباشرة
+## Key Technical Notes
+- **`headless` mode:** Toggle in `settings.py` → `PLAYWRIGHT_LAUNCH_OPTIONS`
+  - `False` = visible browser (recommended for development and monitoring)
+  - `True`  = headless mode (recommended for production and speed)
+- **CSV encoding:** Always exported as `utf-8-sig` for full Excel compatibility
+- **Python environment:** Always run scripts via `.\venv\Scripts\python.exe`, not the global `python`
+- **Human simulation:** Each page visit performs random mouse moves, smooth scroll stages, and random wait intervals before the DOM is read by Scrapy

@@ -1,46 +1,29 @@
-# دليل استخدام المشروع (Usage Guide)
+# 📖 Usage Guide
 
-أهلاً بك في نظام سحب بيانات المنصات التعليمية المبني على `Scrapy` و `Playwright`. يساعدك هذا الدليل في تشغيل المشروع والحصول على البيانات بشكل سلس ومثالي.
-
-## 1. المتطلبات والتشغيل المبدئي
-يجب أن تتأكد أن البيئة الافتراضية مفعلة، أو أن تستخدم مسار البايثون المرفق داخل مجلد المشروع لتشغيل الكود لضمان توفر كافة الحزم:
+## Running the Main Scraper
+Configure your target in `config.yaml`, then run:
 ```powershell
-.\venv\Scripts\python.exe <اسم_الملف.py>
+.\venv\Scripts\python.exe main.py
 ```
 
-## 2. البرامج والمهمات الرئيسية
+## Scraping a Custom List of URLs
+Add your URLs to `menu_links.json` (one per line, format: `Name: https://url`), then run:
+```powershell
+.\venv\Scripts\python.exe run_specialties.py
+```
 
-### أ) جلب أو تحديث قوائم الجامعات والكورسات (`main.py`)
-هذا هو العنكبوت الرئيسي والمرن. يُقرأ مساره وما يجب فعله من خلال ملف `config.yaml`.
-- **خطوات التشغيل:**
-  1. افتح ملف `config.yaml`.
-  2. ضع الرابط الذي تود سحبه في حقل `target_url`.
-  3. ضع اسم المجلد والملف الذي ستُحفظ فيه البيانات بداخل حقل `output`.
-  4. شغّل الكود:
-  ```powershell
-  .\venv\Scripts\python.exe main.py
-  ```
+## Cleaning & Structuring Raw Data
+After scraping, split compound text fields into clean columns:
+```powershell
+.\venv\Scripts\python.exe process_courses.py
+```
 
-### ب) جلب التخصصات العربية ومقالاتها (`run_specialties.py`)
-هذا العنكبوت خُصص فقط للرابط والمسارات الموجودة داخل ملف `menu_links.json` لزيارة كل رابط وسحب تفاصيل ومقالات التخصص الكاملة وحماية المستندات من حظر الموقع (Cloudflare).
-- **للتشغيل:**
-  ```powershell
-  .\venv\Scripts\python.exe run_specialties.py
-  ```
+## Output Location
+All extracted files are saved to `data/<project>/<folder>/` as defined in `config.yaml`:
+- `output.csv`  → Excel-compatible (UTF-8 BOM)
+- `output.json` → API-ready
+- `output.db`   → SQLite database
 
-### ج) تنظيف وتجزئة المساقات المتداخلة (`process_courses.py`)
-تحتوي العديد من المنصات على الرسوم والمدة معاً في نص واحد (مثلاً `14000 MYR • 4 Years`).
-هذا السكريبت يقرأ قائمة الكورسات الضخمة ويصنفها إلى (`Fee`, `Duration`, `Intakes`) ويخرجها بملف جديد `courses_cleaned.csv` نظيف تماماً.
-- **للتشغيل:**
-  ```powershell
-  .\venv\Scripts\python.exe process_courses.py
-  ```
-
-## 3. أين تجد مخرجاتك؟
-كل شيء تم استخراجه يتم بناؤه في المجلد `data/your_uni/` وتصنيفه لمجلدات ثانوية.
-كل مخرج سيتواجد بثلاث صيغ لتختبر وتستخدم الأنسب لمشروعك البرمجي:
-1. `CSV` (لبرامج الإكسل)
-2. `JSON` (للتمثيل البرمجي البسيط)
-3. `SQLite (.db)` (كمثال لقاعدة بيانات حية)
-
-تم البناء باحترافية، نرجو لك التوفيق!
+## Live Browser Monitoring
+The browser window is visible by default during scraping.
+To run silently (headless), set `"headless": True` in `scraper/settings.py`.
