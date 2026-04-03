@@ -93,16 +93,24 @@ class ExportPipeline:
     def open_spider(self, spider: Spider):
         self.config = spider.settings.get("CONFIG", {})
         out_cfg = self.config.get("output", {})
-        Path("data").mkdir(parents=True, exist_ok=True)
+        
+        project = out_cfg.get("project", "default_site")
+        folder = out_cfg.get("folder", "general")
+        filename = out_cfg.get("filename", "output")
+        
+        self.base_dir = Path("data") / project / folder
+        self.base_dir.mkdir(parents=True, exist_ok=True)
+        self.filename = filename
 
         if out_cfg.get("sqlite", True):
-            db_path = Path("data") / out_cfg.get("db_name", "scraping.db")
+            db_path = self.base_dir / f"{filename}.db"
             self.db_conn = sqlite3.connect(str(db_path))
             self.db_cursor = self.db_conn.cursor()
             logger.info("SQLite database opened: %s", db_path)
 
         if out_cfg.get("csv", True):
-            self.csv_file = open("data/output.csv", "w", newline="", encoding="utf-8-sig")
+            csv_path = self.base_dir / f"{filename}.csv"
+            self.csv_file = open(csv_path, "w", newline="", encoding="utf-8-sig")
 
         logger.info("ExportPipeline ready.")
 
@@ -111,12 +119,13 @@ class ExportPipeline:
 
         if self.csv_file:
             self.csv_file.close()
-            logger.info("CSV saved: data/output.csv (%d items)", len(self.json_items))
+            logger.info("CSV saved: %s (%d items)", self.base_dir / f"{self.filename}.csv", len(self.json_items))
 
         if out_cfg.get("json", True) and self.json_items:
-            with open("data/output.json", "w", encoding="utf-8") as f:
+            json_path = self.base_dir / f"{self.filename}.json"
+            with open(json_path, "w", encoding="utf-8") as f:
                 json.dump(self.json_items, f, ensure_ascii=False, indent=2)
-            logger.info("JSON saved: data/output.json (%d items)", len(self.json_items))
+            logger.info("JSON saved: %s (%d items)", json_path, len(self.json_items))
 
         if self.db_conn:
             self.db_conn.commit()

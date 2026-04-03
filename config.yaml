@@ -1,43 +1,61 @@
 # ============================================================
-# Scraper Configuration - Edit this file to target any website
+# Scraper Configuration - your-uni.com Universities
 # ============================================================
 
-# Target website
-target_url: "https://example.com/listings"
-login_url: ""           # Leave empty if no login required
-base_url: "https://example.com"
+# Target configuration
+target_url: "https://your-uni.com/%D8%AC%D8%A7%D9%85%D8%B9%D8%A7%D8%AA-%D9%85%D8%A7%D9%84%D9%8A%D8%B2%D9%8A%D8%A7/"
+base_url: "https://your-uni.com"
 
-# Authentication (use .env for credentials)
+# Output configuration
+output:
+  project: "your_uni"         # Website/Project name
+  folder: "universities_ar"   # Section Name (Courses, Universities, etc)
+  filename: "universities"    # File name
+  csv: true
+  json: true
+  sqlite: true
+
+# Authentication (not needed)
 auth:
   enabled: false
-  username_field: "username"   # HTML input name attribute
-  password_field: "password"   # HTML input name attribute
+  username_field: "username"
+  password_field: "password"
   submit_selector: "button[type=submit]"
-  success_selector: ".dashboard"   # Selector visible after login
+  success_selector: ".dashboard"
 
-# CSS Selectors for data extraction
+# Extraction mode: "sections" for heading-based pages, "list" for table/card pages
+extraction_mode: "sections"
+
+# CSS Selectors for list-based extraction
 selectors:
-  items_list: ".item-card"          # Container for each item
-  title: ".item-title"
-  description: ".item-desc"
-  link: "a.item-link"
-  price: ".item-price"
-  date: ".item-date"
-  image: "img.item-image"
+  items_list: "tbody tr"
+  title: "td:nth-child(1)"
+  description: ""
+  price: "td:nth-child(2)"
+  link: "td:nth-child(3) a"
+  date: ""
+  image: ""
+
+# Section-specific selectors (used when extraction_mode = "sections")
+section_selectors:
+  title: "a"
+  description_sibling: "p"
+  read_more_text: "إقراء المزيد"
 
 # Pagination settings
 pagination:
-  type: "button"        # Options: button | url_param | infinite_scroll
-  next_selector: "a.next-page"
-  url_param: "page"     # Used when type=url_param
-  max_pages: 50
+  type: "url_param"
+  next_selector: ""
+  url_param: "page"
+  max_pages: 320
 
-# Wait conditions (for JS-rendered content)
+# Wait settings
 wait:
-  selector: ".item-card"    # Wait for this selector before scraping
-  timeout: 30000            # Milliseconds
+  enabled: true
+  selector: "h3"
+  timeout: 120000
 
-# Request delays (anti-detection)
+# Request delays
 delays:
   min: 2.0
   max: 5.0
@@ -48,14 +66,8 @@ browser:
   viewport_width: 1920
   viewport_height: 1080
 
-# Output settings
-output:
-  csv: true
-  json: true
-  sqlite: true
-  db_name: "scraping.db"
 
-# Proxy (optional) - reads from proxies.txt if enabled
+# Proxy (disabled)
 proxy:
   enabled: false
   rotation: true

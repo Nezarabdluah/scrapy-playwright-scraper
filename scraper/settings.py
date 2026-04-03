@@ -14,14 +14,14 @@ DOWNLOAD_HANDLERS = {
 }
 PLAYWRIGHT_BROWSER_TYPE = "chromium"
 PLAYWRIGHT_LAUNCH_OPTIONS = {
-    "headless": True,
+    "headless": False,
     "args": [
         "--no-sandbox",
         "--disable-dev-shm-usage",
         "--disable-blink-features=AutomationControlled",
     ],
 }
-PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 30000
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 120000
 
 # Twisted async reactor required by playwright
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
