@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المشاريع - مستخرج البيانات الذكي</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="icon">🕷️</span>
+            <span class="brand-text">مستخرج البيانات الذكي</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 الرئيسية</a>
+            <a href="{{ url_for('projects_list') }}" class="nav-link active">📁 المشاريع</a>
+            <a href="{{ url_for('new_project') }}" class="nav-link">➕ مشروع جديد</a>
+            <a href="{{ url_for('help_page') }}" class="nav-link">❓ المساعدة</a>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container">
+        <div class="page-header">
+            <h1>📁 المشاريع</h1>
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary">➕ مشروع جديد</a>
+        </div>
+
+        {% if projects %}
+        <div class="projects-list">
+            {% for project in projects %}
+            <div class="project-card-full" id="project-{{ project.project_name }}">
+                <div class="project-card-header">
+                    <div class="project-title">
+                        <h3>{{ project.project_name }}</h3>
+                        <span class="status-badge status-{{ project.status_info.status }}">
+                            {% if project.status_info.status == 'running' %}
+                                🔄 قيد التشغيل
+                            {% elif project.status_info.status == 'success' %}
+                                ✅ مكتمل
+                            {% elif project.status_info.status == 'error' %}
+                                ❌ خطأ
+                            {% elif project.status_info.status == 'stopped' %}
+                                ⏹️ متوقف
+                            {% else %}
+                                ⏳ في الانتظار
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="project-meta">
+                        <span>📅 {{ project.created_at[:10] if project.created_at else '-' }}</span>
+                    </div>
+                </div>
+
+                {% if project.status_info.status == 'running' %}
+                <div class="progress-section">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ project.status_info.progress }}%"></div>
+                    </div>
+                    <span class="progress-text">{{ project.status_info.progress }}%</span>
+                </div>
+                {% endif %}
+
+                <div class="project-details">
+                    <div class="detail-row">
+                        <span class="detail-label">🔗 الرابط:</span>
+                        <span class="detail-value">{{ project.target_url }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📦 نوع البيانات:</span>
+                        <span class="detail-value">{{ project.data_type }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📄 عدد الصفحات:</span>
+                        <span class="detail-value">{{ project.max_pages }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">⏱️ التأخير:</span>
+                        <span class="detail-value">{{ project.delay }} ثانية</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">💾 التصدير:</span>
+                        <span class="detail-value">{{ project.export_format|upper }}</span>
+                    </div>
+                </div>
+
+                {% if project.status_info.stats %}
+                <div class="stats-mini">
+                    <span>📄 {{ project.status_info.stats.pages_crawled }} صفحة</span>
+                    <span>📦 {{ project.status_info.stats.items_scraped }} عنصر</span>
+                    {% if project.status_info.stats.errors_count > 0 %}
+                    <span class="error">⚠️ {{ project.status_info.stats.errors_count }} خطأ</span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="project-actions">
+                    {% if project.status_info.status == 'running' %}
+                    <a href="{{ url_for('stop_project', project_name=project.project_name) }}" 
+                       class="btn btn-warning"
+                       onclick="return confirm('هل تريد إيقاف المشروع؟')">
+                        ⏹️ إيقاف
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('run_project', project_name=project.project_name) }}" 
+                       class="btn btn-primary">
+                        ▶️ تشغيل
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('project_status', project_name=project.project_name) }}" 
+                       class="btn btn-secondary">
+                        📊 التفاصيل
+                    </a>
+                    
+                    {% if project.status_info.status == 'success' %}
+                    <a href="{{ url_for('download_results', project_name=project.project_name) }}" 
+                       class="btn btn-success">
+                        📥 تحميل
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{{ url_for('delete_project_route', project_name=project.project_name) }}" 
+                       class="btn btn-danger"
+                       onclick="return confirm('هل أنت متأكد من حذف المشروع؟')">
+                        🗑️ حذف
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h2>لا توجد مشاريع</h2>
+            <p>ابدأ بإنشاء مشروعك الأول</p>
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary btn-lg">
+                ➕ إنشاء مشروع جديد
+            </a>
+        </div>
+        {% endif %}
+    </main>
+
+    <footer class="footer">
+        <p>🕷️ مستخرج البيانات الذكي © 2026</p>
+    </footer>
+
+    <script>
+        function autoRefresh() {
+            const runningProjects = document.querySelectorAll('.status-running');
+            if (runningProjects.length > 0) {
+                setTimeout(() => location.reload(), 3000);
+            }
+        }
+        autoRefresh();
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+{
+    "language_name": "English",
+    "pages": {
+        "main": {
+            "title": "Welcome!",
+            "welcome_card": {
+                "title": "✨ Smart Data Extractor",
+                "description": "A professional tool to extract data from any website without coding!"
+            },
+            "stats": {
+                "completed": "Completed",
+                "running": "Running",
+                "items": "Items",
+                "avg_time": "Average Execution Time"
+            },
+            "actions": {
+                "create_project": "Create New Project",
+                "view_projects": "My Projects",
+                "quick_guide": "Quick Start Guide"
+            },
+            "recent_projects": "Recent Projects",
+            "no_projects": {
+                "title": "No Projects Yet",
+                "description": "Start by creating your first project to extract data",
+                "create_button": "Create Your First Project"
+            }
+        },
+        "new_project": {
+            "title": "New Project",
+            "form": {
+                "project_name": "Project Name *",
+                "project_name_placeholder": "e.g., amazon_products",
+                "project_name_help": "Choose a clear name for your project",
+                
+                "target_url": "Website URL *",
+                "target_url_placeholder": "https://example.com/products",
+                "target_url_help": "The main URL of the page containing the data",
+                
+                "data_type": "Data Type",
+                "data_type_options": ["Product List", "News Articles", "Jobs", "Real Estate", "Other"],
+                "data_type_help": "Select the type of content to extract",
+                
+                "export_format": "Export Format",
+                "export_format_options": ["JSON", "CSV", "Both"],
+                
+                "max_pages": "Max Pages",
+                "max_pages_help": "Maximum number of pages to crawl",
+                
+                "delay": "Delay (seconds)",
+                "delay_help": "Time between requests to avoid blocking",
+                
+                "fields_required": "Required Fields",
+                "fields_placeholder": "e.g., Title, Price, Rating, Author",
+                "fields_help": "Enter the fields to extract, separated by commas",
+                
+                "advanced_options": "Advanced Options",
+                "use_url_list": "Use URL List (batch mode)",
+                "use_url_list_help": "Enable this option to extract data from multiple URLs at once",
+                "upload_txt": "Upload a text file with one URL per line",
+                "file_uploader": "Choose URLs file (urls.txt)",
+                "preview": "Preview",
+                
+                "valid_urls": "{{count}} valid URLs",
+                "no_valid_urls": "No valid URLs found",
+                
+                "submit": "Run Project",
+                "cancel": "Cancel"
+            }
+        },
+        "my_projects": {
+            "title": "My Projects",
+            "no_projects": {
+                "title": "No Projects Yet",
+                "description": "Start by creating a new project from the 'New Project' page",
+                "create_button": "Create Project"
+            }
+        },
+        "settings": {
+            "title": "Settings",
+            "general": "General",
+            "preferences": "Preferences",
+            "default_delay": "Default Delay (seconds)",
+            "default_pages": "Maximum Pages",
+            "browser_mode": "Browser Mode",
+            "browser_mode_options": ["Headless", "Visible", "No Browser"],
+            "auto_export": "Auto-Export",
+            "notify_complete": "Notify on Completion",
+            "save": "Save",
+            "saved_configs": "Manage Saved Settings",
+            "delete_button": "Delete"
+        },
+        "help": {
+            "title": "Help",
+            "quick_guide": "Quick Start Guide",
+            "quick_guide_content": {
+                "normal_use": "For normal usage:",
+                "step1": "Go to 'New Project'",
+                "step2": "Enter URL and required fields",
+                "step3": "Click 'Run' and wait for the results",
+                "step4": "Download results from 'My Projects'",
+                "batch_use": "To use a URL list:",
+                "step1_batch": "Create a urls.txt file with one URL per line",
+                "step2_batch": "Enable 'Use URL List' option",
+                "step3_batch": "Upload the file and start the project"
+            },
+            "troubleshooting": "Troubleshooting",
+            "support": "Support",
+            "email": "📧 support@example.com"
+        }
+    },
+    "status": {
+        "pending": "Pending",
+        "running": "Running",
+        "success": "Completed",
+        "error": "Failed",
+        "stopped": "Stopped"
+    },
+    "actions": {
+        "run": "Run",
+        "rerun": "Rerun",
+        "stop": "Stop",
+        "download": "Download",
+        "delete": "Delete",
+        "confirm": "Confirm"
+    },
+    "notifications": {
+        "project_started": "Project '{{name}}' started successfully!",
+        "project_rerun": "Project '{{name}}' is being rerun.",
+        "project_stopped": "Project '{{name}}' has been stopped.",
+        "project_deleted": "Project '{{name}}' has been deleted.",
+        "settings_saved": "Settings saved successfully!",
+        "errors": {
+            "invalid_project_name": "❌ Project name must be unique and contain only letters, numbers, underscores (_), or hyphens (-).",
+            "invalid_url": "❌ URL must start with http:// or https://.",
+            "no_project_name": "❌ Project name is required.",
+            "no_target_url": "❌ Website URL is required if URL list is not enabled.",
+            "invalid_url_list": "❌ The list contains invalid URLs. Please ensure all URLs start with http:// or https://.",
+            "no_url_list": "❌ The uploaded file does not contain valid URLs.",
+            "invalid_page_count": "❌ Number of pages must be between 1 and 500."
+        }
+    },
+    "sidebar": {
+        "title": "Menu",
+        "system_status": "System Status",
+        "connected": "Connected",
+        "error": "Error",
+        "projects_count": "Projects"
+    }
+}

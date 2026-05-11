@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مشروع جديد - مستخرج البيانات الذكي</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="icon">🕷️</span>
+            <span class="brand-text">مستخرج البيانات الذكي</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 الرئيسية</a>
+            <a href="{{ url_for('projects_list') }}" class="nav-link">📁 المشاريع</a>
+            <a href="{{ url_for('new_project') }}" class="nav-link active">➕ مشروع جديد</a>
+            <a href="{{ url_for('help_page') }}" class="nav-link">❓ المساعدة</a>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container">
+        <div class="page-header">
+            <h1>➕ مشروع جديد</h1>
+        </div>
+
+        <div class="form-container">
+            <form method="POST" action="{{ url_for('new_project') }}" class="form">
+                <div class="form-section">
+                    <h2>📋 معلومات أساسية</h2>
+                    
+                    <div class="form-group">
+                        <label for="project_name">اسم المشروع *</label>
+                        <input type="text" 
+                               id="project_name" 
+                               name="project_name" 
+                               placeholder="مثال: استخراج منتجات أمازون"
+                               required
+                               class="form-control">
+                        <small>اسم يعبر عن المشروع (حروف وأرقام فقط)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target_url">الرابط المستهدف *</label>
+                        <input type="url" 
+                               id="target_url" 
+                               name="target_url" 
+                               placeholder="https://example.com/products"
+                               required
+                               class="form-control">
+                        <small>الرابط الكامل للصفحة المراد استخراج البيانات منها</small>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>⚙️ إعدادات الاستخراج</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="data_type">نوع البيانات</label>
+                            <select id="data_type" name="data_type" class="form-control">
+                                <option value="products">📦 منتجات</option>
+                                <option value="articles">📄 مقالات</option>
+                                <option value="listings">📋 قوائم</option>
+                                <option value="profiles">👤 ملفات شخصية</option>
+                                <option value="general">🌐 عام</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="export_format">تنسيق التصدير</label>
+                            <select id="export_format" name="export_format" class="form-control">
+                                <option value="json">JSON</option>
+                                <option value="csv">CSV (Excel)</option>
+                                <option value="both">كلاهما</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="max_pages">عدد الصفحات</label>
+                            <input type="number" 
+                                   id="max_pages" 
+                                   name="max_pages" 
+                                   value="10"
+                                   min="1"
+                                   max="500"
+                                   class="form-control">
+                            <small>الحد الأقصى للصفحات المراد استخراجها</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="delay">التأخير (ثواني)</label>
+                            <input type="range" 
+                                   id="delay" 
+                                   name="delay" 
+                                   value="2"
+                                   min="1"
+                                   max="10"
+                                   class="form-control-range">
+                            <output for="delay" id="delay-output">2</output> ثانية
+                            <small>التأخير بين الصفحات لتجنب الحظر</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>📝 الحقول المطلوبة</h2>
+                    
+                    <div class="form-group">
+                        <label for="fields">الحقول المراد استخراجها</label>
+                        <textarea id="fields" 
+                                  name="fields" 
+                                  rows="3"
+                                  placeholder="العنوان, السعر, الرابط, الوصف, الصورة"
+                                  class="form-control"></textarea>
+                        <small>افصل بين الحقول بفاصلة (,)</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        🚀 إنشاء المشروع
+                    </button>
+                    <a href="{{ url_for('projects_list') }}" class="btn btn-secondary">
+                        ❌ إلغاء
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🕷️ مستخرج البيانات الذكي © 2026</p>
+    </footer>
+
+    <script>
+        const delayInput = document.getElementById('delay');
+        const delayOutput = document.getElementById('delay-output');
+        
+        delayInput.addEventListener('input', function() {
+            delayOutput.value = this.value;
+        });
+    </script>
+</body>
+</html>

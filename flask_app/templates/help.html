@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المساعدة - مستخرج البيانات الذكي</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="icon">🕷️</span>
+            <span class="brand-text">مستخرج البيانات الذكي</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 الرئيسية</a>
+            <a href="{{ url_for('projects_list') }}" class="nav-link">📁 المشاريع</a>
+            <a href="{{ url_for('new_project') }}" class="nav-link">➕ مشروع جديد</a>
+            <a href="{{ url_for('help_page') }}" class="nav-link active">❓ المساعدة</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>❓ مركز المساعدة</h1>
+        </div>
+
+        <div class="help-grid">
+            <div class="help-card">
+                <h2>🚀 دليل البدء السريع</h2>
+                <div class="help-content">
+                    <ol class="help-list">
+                        <li>
+                            <strong>انتقل لصفحة "مشروع جديد"</strong>
+                            <p>اضغط على "➕ مشروع جديد" في الأعلى</p>
+                        </li>
+                        <li>
+                            <strong>أدخل معلومات المشروع</strong>
+                            <p>اكتب اسم المشروع والرابط المستهدف</p>
+                        </li>
+                        <li>
+                            <strong>حدد الحقول المطلوبة</strong>
+                            <p>اكتب الحقول مثل: العنوان, السعر, الرابط</p>
+                        </li>
+                        <li>
+                            <strong>اضغط على "إنشاء المشروع"</strong>
+                            <p>سيتم إنشاء المشروع ويمكنك تشغيله</p>
+                        </li>
+                        <li>
+                            <strong>شغّل المشروع</strong>
+                            <p>اذهب للمشاريع واضغط "تشغيل"</p>
+                        </li>
+                        <li>
+                            <strong>حمّل النتائج</strong>
+                            <p>بعد الاكتمال، حمّل ملف JSON أو CSV</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <h2>⚙️ الإعدادات الموصى بها</h2>
+                <div class="help-content">
+                    <table class="help-table">
+                        <tr>
+                            <th>الإعداد</th>
+                            <th>القيمة الموصى بها</th>
+                        </tr>
+                        <tr>
+                            <td>عدد الصفحات</td>
+                            <td>10 - 50 صفحة</td>
+                        </tr>
+                        <tr>
+                            <td>التأخير</td>
+                            <td>2 - 3 ثواني</td>
+                        </tr>
+                        <tr>
+                            <td>نوع البيانات</td>
+                            <td>حسب نوع الموقع</td>
+                        </tr>
+                        <tr>
+                            <td>التصدير</td>
+                            <td>CSV (للـ Excel)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <h2>❌ حل المشاكل الشائعة</h2>
+                <div class="help-content">
+                    <div class="troubleshoot-item">
+                        <h4>❌ رابط غير صالح</h4>
+                        <p>تأكد من أن الرابط يبدأ بـ <code>https://</code></p>
+                    </div>
+                    <div class="troubleshoot-item">
+                        <h4>❌ فشل الاتصال</h4>
+                        <p>تحقق من الاتصال بالإنترنت أو جرب لاحقاً</p>
+                    </div>
+                    <div class="troubleshoot-item">
+                        <h4>❌ تم الحظر</h4>
+                        <p>زِد التأخير إلى 5 ثواني أو أكثر</p>
+                    </div>
+                    <div class="troubleshoot-item">
+                        <h4>❌ لا بيانات</h4>
+                        <p>تأكد من وجود الحقول المطلوبة في الصفحة</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="help-card">
+                <h2>📞 الدعم والمساعدة</h2>
+                <div class="help-content">
+                    <ul class="support-list">
+                        <li>📧 덌메يل: support@example.com</li>
+                        <li>🐛 الإبلاغ عن خطأ: <a href="#">GitHub Issues</a></li>
+                        <li>💡 اقتراح ميزة: <a href="#">GitHub Discussions</a></li>
+                        <li>📖 الدليل الكامل: <a href="#">README.md</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-tips">
+            <h2>💡 نصائح سريعة</h2>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <span class="tip-icon">🔍</span>
+                    <p>استخدم وضع "خفي" لتجنب الحظر</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">⏱️</span>
+                    <p>لا تجعل التأخير أقل من ثانية</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">📊</span>
+                    <p>ابدأ بعدد صفحات قليل للاختبار</p>
+                </div>
+                <div class="tip-item">
+                    <span class="tip-icon">💾</span>
+                    <p>صَدّر النتائج بتنسيق CSV لسهولة القراءة</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🕷️ مستخرج البيانات الذكي © 2026 | أداة مفتوحة المصدر ومجانية</p>
+    </footer>
+</body>
+</html>

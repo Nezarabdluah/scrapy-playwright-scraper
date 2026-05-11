@@ -1,0 +1,160 @@
+{
+    "language_name": "العربية",
+    "pages": {
+        "main": {
+            "title": "مرحباً بك!",
+            "welcome_card": {
+                "title": "✨ مستخرج البيانات الذكي",
+                "description": "أداة احترافية لاستخراج البيانات من أي موقع ويب، بدون الحاجة لكتابة كود!"
+            },
+            "stats": {
+                "completed": "مكتملة",
+                "running": "قيد التشغيل",
+                "items": "عناصر",
+                "avg_time": "متوسط وقت التشغيل"
+            },
+            "actions": {
+                "create_project": "إنشاء مشروع جديد",
+                "view_projects": "عرض مشاريعي",
+                "quick_guide": "دليل البدء"
+            },
+            "recent_projects": "آخر المشاريع",
+            "no_projects": {
+                "title": "لا توجد مشاريع بعد",
+                "description": "ابدأ بإنشاء مشروعك الأول لاستخراج البيانات",
+                "create_button": "أنشئ مشروعك الأول"
+            }
+        },
+        "new_project": {
+            "title": "مشروع جديد",
+            "form": {
+                "project_name": "اسم المشروع *",
+                "project_name_placeholder": "مثال: منتجات_أمازون",
+                "project_name_help": "اختر اسماً واضحاً لمشروعك",
+                
+                "target_url": "رابط الموقع *",
+                "target_url_placeholder": "https://example.com/products",
+                "target_url_help": "الرابط الرئيسي للصفحة التي تحتوي البيانات",
+                
+                "data_type": "نوع البيانات",
+                "data_type_options": ["قائمة منتجات", "مقالات أخبار", "وظائف", "عقارات", "أخرى"],
+                "data_type_help": "اختر نوع المحتوى المستهدف",
+                
+                "export_format": "تنسيق التصدير",
+                "export_format_options": ["JSON", "CSV", "كلاهما"],
+                
+                "max_pages": "أقصى صفحات",
+                "max_pages_help": "الحد الأقصى لعدد الصفحات التي سيتم زحفها",
+                
+                "delay": "تأخير (ثواني)",
+                "delay_help": "الوقت بين كل طلب لتجنب الحظر",
+                
+                "fields_required": "الحقول المطلوبة",
+                "fields_placeholder": "العنوان, السعر, الوصف, الرابط, الصورة",
+                "fields_help": "مثال: العنوان, السعر, التقييم, الكاتب",
+                
+                "advanced_options": "خيارات متقدمة",
+                "use_url_list": "استخدام قائمة روابط (دُفعات)",
+                "use_url_list_help": "فعّل هذا الخيار لاستخراج بيانات من عدة روابط دفعة واحدة",
+                "upload_txt": "ارفع ملف نصي يحتوي على رابط واحد في كل سطر",
+                "file_uploader": "اختر ملف الروابط (urls.txt)",
+                "preview": "معاينة",
+                
+                "valid_urls": "{{count}} رابط صالح",
+                "no_valid_urls": "لم يتم العثور على روابط صالحة",
+                
+                "submit": "تشغيل المشروع",
+                "cancel": "إلغاء"
+            }
+        },
+        "my_projects": {
+            "title": "مشاريعي",
+            "project_url": "الرابط",
+            "no_projects": {
+                "title": "لا توجد مشاريع بعد",
+                "description": "ابدأ بإنشاء مشروع جديد من صفحة 'مشروع جديد'",
+                "create_button": "إنشاء مشروع"
+            }
+        },
+        "settings": {
+            "title": "الإعدادات",
+            "general": "عام",
+            "preferences": "تفضيلات",
+            "default_delay": "التأخير الافتراضي (ثانية)",
+            "default_pages": "الحد الأقصى للصفحات",
+            "browser_mode": "وضع المتصفح",
+            "browser_mode_options": ["خفي", "مرئي", "بدون متصفح"],
+            "auto_export": "تصدير تلقائي",
+            "notify_complete": "إشعار عند الاكتمال",
+            "save": "حفظ",
+            "saved_configs": "إدارة الإعدادات المحفوظة",
+            "delete_button": "حذف"
+        },
+        "help": {
+            "title": "مساعدة",
+            "quick_guide": "دليل الاستخدام السريع",
+            "quick_guide_content": {
+                "normal_use": "للاستخدام العادي:",
+                "step1": "انتقل لـ 'مشروع جديد'",
+                "step2": "أدخل الرابط والحقول المطلوبة",
+                "step3": "اضغط 'تشغيل' وانتظر النتائج",
+                "step4": "يمكنك استخراج:",
+                "batch_use": "لاستخدام قائمة روابط:",
+                "step1_batch": "أنشئ ملف urls.txt برابط في كل سطر",
+                "step2_batch": "فعّل خيار 'استخدام قائمة روابط'",
+                "step3_batch": "ارفع الملف وابدأ المشروع"
+            },
+            "troubleshooting": "حل المشاكل",
+            "support": "الدعم",
+            "email": "📧 support@example.com"
+        }
+    },
+    "status": {
+        "pending": "قيد الانتظار",
+        "running": "جاري التشغيل",
+        "success": "مكتمل",
+        "error": "فشل",
+        "stopped": "متوقف"
+    },
+    "actions": {
+        "run": "تشغيل",
+        "rerun": "إعادة التشغيل",
+        "stop": "إيقاف",
+        "download": "تحميل",
+        "delete": "حذف",
+        "confirm": "تأكيد"
+    },
+    "notifications": {
+        "project_started": "بدأ مشروع '{{name}}' بنجاح!",
+        "project_rerun": "جاري إعادة تشغيل المشروع '{{name}}'.",
+        "project_stopped": "تم إيقاف المشروع '{{name}}'.",
+        "project_deleted": "تم حذف المشروع '{{name}}' بنجاح.",
+        "confirm_stop": "تأكيد الإيقاف",
+        "confirm_stop_message": "هل أنت متأكد أنك تريد إيقاف المشروع '{{name}}'؟",
+        "confirm_rerun": "تأكيد إعادة التشغيل",
+        "confirm_rerun_message": "هل تريد إعادة تشغيل المشروع '{{name}}'؟",
+        "confirm_delete": "تأكيد الحذف",
+        "confirm_delete_message": "هل أنت متأكد أنك تريد حذف المشروع '{{name}}'؟ لا يمكن التراجع عن ذلك.",
+        "started": "تم التشغيل",
+        "stopped": "تم الإيقاف",
+        "deleted": "تم الحذف",
+        "settings_saved": "تم حفظ الإعدادات بنجاح!",
+        "errors": {
+            "invalid_project_name": "❌ اسم المشروع يجب أن يكون فريداً وأن يحتوي على أحرف عربية/إنكليزية وأرقام فقط (_، -).",
+            "invalid_url": "❌ عنوان الرابط يجب أن يبدأ بـ http:// أو https://.",
+            "no_project_name": "❌ اسم المشروع مطلوب.",
+            "no_target_url": "❌ رابط الموقع مطلوب إذا لم تُفعّل خيار قائمة الروابط.",
+            "invalid_url_list": "❌ القائمة تحتوي على روابط غير صالحة. يرجى التأكد أن جميع الروابط تبدأ بـ http:// أو https://.",
+            "no_url_list": "❌ الملف المرفوع لا يحتوي على روابط صالحة.",
+            "invalid_page_count": "❌ عدد الصفحات يجب أن يكون بين 1 و500.",
+            "generic": "خطأ"
+        }
+    },
+    "sidebar": {
+        "title": "القائمة",
+        "system_status": "حالة النظام",
+        "connected": "متصل",
+        "error": "خطأ",
+        "projects_count": "المشاريع"
+    }
+}

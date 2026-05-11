@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.project_name }} - مستخرج البيانات الذكي</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <meta http-equiv="refresh" content="3">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="icon">🕷️</span>
+            <span class="brand-text">مستخرج البيانات الذكي</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link">🏠 الرئيسية</a>
+            <a href="{{ url_for('projects_list') }}" class="nav-link">📁 المشاريع</a>
+            <a href="{{ url_for('new_project') }}" class="nav-link">➕ مشروع جديد</a>
+            <a href="{{ url_for('help_page') }}" class="nav-link">❓ المساعدة</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="page-header">
+            <h1>📊 {{ project.project_name }}</h1>
+            <a href="{{ url_for('projects_list') }}" class="btn btn-secondary">← العودة للمشاريع</a>
+        </div>
+
+        <div class="status-container">
+            <div class="status-card {{ 'status-running' if status.status == 'running' else '' }}">
+                <div class="status-header">
+                    <h2>
+                        {% if status.status == 'running' %}
+                            🔄 قيد التشغيل
+                        {% elif status.status == 'success' %}
+                            ✅ مكتمل بنجاح
+                        {% elif status.status == 'error' %}
+                            ❌ فشل
+                        {% elif status.status == 'stopped' %}
+                            ⏹️ متوقف
+                        {% else %}
+                            ⏳ في الانتظار
+                        {% endif %}
+                    </h2>
+                </div>
+
+                {% if status.status == 'running' %}
+                <div class="progress-container">
+                    <div class="progress-bar-large">
+                        <div class="progress-fill" id="progress-bar" style="width: {{ status.progress }}%"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span id="progress-text">{{ status.progress }}%</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3>📈 إحصائيات</h3>
+                <div class="stats-list">
+                    <div class="stat-item">
+                        <span class="stat-item-label">📄 الصفحات:</span>
+                        <span class="stat-item-value">{{ status.stats.pages_crawled }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-item-label">📦 العناصر:</span>
+                        <span class="stat-item-value">{{ status.stats.items_scraped }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-item-label">⚠️ الأخطاء:</span>
+                        <span class="stat-item-value">{{ status.stats.errors_count }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <h3>⚙️ الإعدادات</h3>
+                <div class="settings-list">
+                    <div class="setting-item">
+                        <span>🔗 الرابط:</span>
+                        <span>{{ project.target_url }}</span>
+                    </div>
+                    <div class="setting-item">
+                        <span>📦 النوع:</span>
+                        <span>{{ project.data_type }}</span>
+                    </div>
+                    <div class="setting-item">
+                        <span>📄 الصفحات:</span>
+                        <span>{{ project.max_pages }}</span>
+                    </div>
+                    <div class="setting-item">
+                        <span>⏱️ التأخير:</span>
+                        <span>{{ project.delay }} ثانية</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if status.logs %}
+        <div class="logs-container">
+            <h3>📋 السجل</h3>
+            <div class="logs-box">
+                {% for log in status.logs[-20:] %}
+                <div class="log-line">{{ log }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="actions-bar">
+            {% if status.status == 'running' %}
+            <a href="{{ url_for('stop_project', project_name=project.project_name) }}" class="btn btn-warning btn-lg">
+                ⏹️ إيقاف المشروع
+            </a>
+            {% elif status.status in ['success', 'error', 'stopped'] %}
+            <a href="{{ url_for('run_project', project_name=project.project_name) }}" class="btn btn-primary btn-lg">
+                🔄 إعادة التشغيل
+            </a>
+            {% if status.status == 'success' %}
+            <a href="{{ url_for('download_results', project_name=project.project_name) }}" class="btn btn-success btn-lg">
+                📥 تحميل النتائج
+            </a>
+            {% endif %}
+            {% else %}
+            <a href="{{ url_for('run_project', project_name=project.project_name) }}" class="btn btn-primary btn-lg">
+                ▶️ تشغيل المشروع
+            </a>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🕷️ مستخرج البيانات الذكي © 2026</p>
+    </footer>
+
+    <script>
+        function updateProgress() {
+            fetch('{{ url_for("api_status", project_name=project.project_name) }}')
+                .then(response => response.json())
+                .then(data => {
+                    const progressBar = document.getElementById('progress-bar');
+                    const progressText = document.getElementById('progress-text');
+                    if (progressBar && data.progress !== undefined) {
+                        progressBar.style.width = data.progress + '%';
+                        progressText.textContent = data.progress + '%';
+                    }
+                });
+        }
+        
+        {% if status.status == 'running' %}
+        setInterval(updateProgress, 1000);
+        {% endif %}
+    </script>
+</body>
+</html>

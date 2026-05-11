@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستخرج البيانات الذكي</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="icon">🕷️</span>
+            <span class="brand-text">مستخرج البيانات الذكي</span>
+        </div>
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}" class="nav-link active">🏠 الرئيسية</a>
+            <a href="{{ url_for('projects_list') }}" class="nav-link">📁 المشاريع</a>
+            <a href="{{ url_for('new_project') }}" class="nav-link">➕ مشروع جديد</a>
+            <a href="{{ url_for('help_page') }}" class="nav-link">❓ المساعدة</a>
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                        <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>🚀 مرحباً بك في مستخرج البيانات الذكي</h1>
+                <p>أداة احترافية لاستخراج البيانات من الويب بدون برمجة - مجانية وسهلة الاستخدام</p>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-icon">📁</span>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats.total }}</span>
+                    <span class="stat-label">إجمالي المشاريع</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">✅</span>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats.completed }}</span>
+                    <span class="stat-label">مكتمل</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🔄</span>
+                <div class="stat-info">
+                    <span class="stat-value">{{ stats.running }}</span>
+                    <span class="stat-label">قيد التشغيل</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">📦</span>
+                <div class="stat-info">
+                    <span class="stat-value">مجاني</span>
+                    <span class="stat-label">100%</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="action-buttons">
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary btn-lg">
+                ➕ إنشاء مشروع جديد
+            </a>
+            <a href="{{ url_for('projects_list') }}" class="btn btn-secondary btn-lg">
+                📁 عرض المشاريع
+            </a>
+            <a href="{{ url_for('help_page') }}" class="btn btn-outline btn-lg">
+                ❓ دليل الاستخدام
+            </a>
+        </section>
+
+        {% if projects %}
+        <section class="recent-projects">
+            <h2>🕐 أحدث المشاريع</h2>
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>{{ project.project_name }}</h3>
+                        <span class="status-badge status-{{ project.get('status', 'pending') }}">
+                            ⏳ في الانتظار
+                        </span>
+                    </div>
+                    <div class="project-info">
+                        <p><strong>الرابط:</strong> {{ project.target_url[:50] }}{% if project.target_url|length > 50 %}...{% endif %}</p>
+                        <p><strong>النوع:</strong> {{ project.data_type }}</p>
+                        <p><strong>الصفحات:</strong> {{ project.max_pages }}</p>
+                    </div>
+                    <div class="project-actions">
+                        <a href="{{ url_for('run_project', project_name=project.project_name) }}" class="btn btn-sm btn-primary">
+                            ▶️ تشغيل
+                        </a>
+                        <a href="{{ url_for('project_status', project_name=project.project_name) }}" class="btn btn-sm btn-secondary">
+                            📊 التفاصيل
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% else %}
+        <section class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h2>لا توجد مشاريع بعد</h2>
+            <p>ابدأ بإنشاء مشروعك الأول لاستخراج البيانات</p>
+            <a href="{{ url_for('new_project') }}" class="btn btn-primary btn-lg">
+                ➕ إنشاء مشروع جديد
+            </a>
+        </section>
+        {% endif %}
+    </main>
+
+    <footer class="footer">
+        <p>🕷️ مستخرج البيانات الذكي © 2026 | أداة مفتوحة المصدر ومجانية</p>
+    </footer>
+
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.flash-message').forEach(el => {
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 300);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

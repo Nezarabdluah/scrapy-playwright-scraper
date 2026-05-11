@@ -1,36 +1,38 @@
 # Python
 __pycache__/
 *.py[cod]
+*.class
 *.so
-build/
-dist/
-*.egg-info/
-
-# Virtual Environments
+.Python
 venv/
-.venv/
 env/
-
-# Secrets - NEVER commit these
-.env
-proxies.txt
-
-# Scrapy Output (generated files)
-data/
-logs/
-*.db
-*.sqlite3
+.venv/
 
 # IDE
-.vscode/
 .idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+
+# Results
+user/results/
+user/projects/data/
 
 # OS
 .DS_Store
 Thumbs.db
-desktop.ini
 
-# Coverage
-htmlcov/
-.coverage
-coverage.xml
+# Backup
+*.backup
+_agent_backup/
+*.bak
+
+# Streamlit old
+web_ui_old/
